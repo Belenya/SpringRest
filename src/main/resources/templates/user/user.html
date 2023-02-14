@@ -5,6 +5,9 @@
     <title th:text="${user.getName()}">User</title>
 </head>
     <body th:align="middle">
+        <form th:method="GET" th:action="@{/logout}" th:align="left">
+            <input type="submit" value="Logout"/>
+        </form>
         <div th:align="middle">
             <table th:border="1">
                 <caption th:text="'About user'"></caption>

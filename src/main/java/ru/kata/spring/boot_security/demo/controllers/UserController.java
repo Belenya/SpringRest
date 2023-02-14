@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.security.UserDetailsImpl;
 
+
 @Controller()
 @RequestMapping("/user")
 public class UserController {
@@ -15,8 +16,8 @@ public class UserController {
     @GetMapping
     public String userPage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getDetails();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         model.addAttribute("user",userDetails.getUser());
-        return "user";
+        return "user/user";
     }
 }

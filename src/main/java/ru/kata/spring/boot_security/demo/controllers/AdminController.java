@@ -1,14 +1,13 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.services.role.RoleService;
 import ru.kata.spring.boot_security.demo.services.user.UserService;
-import ru.kata.spring.boot_security.demo.services.user.UserServiceImpl;
 import ru.kata.spring.boot_security.demo.utils.UserValidator;
 
 import javax.validation.Valid;
@@ -18,10 +17,10 @@ import javax.validation.Valid;
 public class AdminController {
 
     private final UserService<User, Long> userService;
-    private final UserService<Role, Long> roleService;
+    private final RoleService<Role, Long> roleService;
     private final UserValidator userValidator;
 
-    public AdminController(UserServiceImpl userService, PasswordEncoder passwordEncoder, UserService<Role, Long> roleService, UserValidator userValidator) {
+    public AdminController(UserService<User, Long> userService, RoleService<Role, Long> roleService, UserValidator userValidator) {
         this.userService = userService;
         this.roleService = roleService;
         this.userValidator = userValidator;
@@ -32,12 +31,6 @@ public class AdminController {
     public String users(Model model) {
         model.addAttribute("users", userService.findAll());
         return "/admin/adminPanel";
-    }
-
-    @GetMapping("/{id}")
-    public String getUserById(@PathVariable("id") String id, Model model) {
-        model.addAttribute("user", userService.findById(Long.parseLong(id)).orElse(new User()));
-        return "/admin/show";
     }
 
     @GetMapping("/new")
@@ -68,10 +61,6 @@ public class AdminController {
     public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "/admin/edit";
-        }
-        if (user.getPassword().isEmpty()) {
-            User user = userService.findById(user.getId()).;
-
         }
         userService.update(user);
         return "redirect:/admin";

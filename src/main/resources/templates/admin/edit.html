@@ -28,7 +28,7 @@
             <br>
             <label for="password">Password:</label>
             <input type="password" th:field="*{password}" id="password"/>
-            <div style="color: red" th:if="${#fields.hasErrors()}" th:if="" th:errors="*{password}">lastName</div>
+            <div style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{password}">lastName</div>
             <br>
             <label for="roles">Roles:</label>
             <select name="roles[]" th:multiple="multiple" th:size="3" th:field="*{role}" id="roles">

@@ -32,6 +32,12 @@ public class UserServiceImpl implements UserService<User, Long> {
     }
 
     public void update(User o) {
+        Optional<User> editedUser = userRepository.findById(o.getId());
+        if (o.getPassword().isEmpty() &  editedUser.isPresent()) {
+            o.setPassword(editedUser.get().getPassword());
+        } else {
+            o.setPassword(passwordEncoder.encode(o.getPassword()));
+        }
         userRepository.save(o);
     }
 
