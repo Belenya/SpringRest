@@ -22,12 +22,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
     @NotEmpty
     @Email
+    @Column(nullable = false)
     private String email;
 
-    @NotNull
+    @Column(nullable = false)
     private String password;
 
     @NotEmpty(message = "Name should be not empty")
@@ -41,8 +41,10 @@ public class User {
     @Min(value = 0, message = "Age must be greater than 0")
     private Integer age;
 
-    @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name =  "users_role",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> role;
 
     public long getId() {

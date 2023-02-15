@@ -4,11 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.role.RoleService;
 import ru.kata.spring.boot_security.demo.services.user.UserService;
-import ru.kata.spring.boot_security.demo.utils.UserValidator;
 
 import javax.validation.Valid;
 
@@ -16,14 +14,12 @@ import javax.validation.Valid;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserService<User, Long> userService;
-    private final RoleService<Role, Long> roleService;
-    private final UserValidator userValidator;
+    private final UserService userService;
+    private final RoleService roleService;
 
-    public AdminController(UserService<User, Long> userService, RoleService<Role, Long> roleService, UserValidator userValidator) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.userValidator = userValidator;
     }
 
 
@@ -42,7 +38,6 @@ public class AdminController {
 
     @PostMapping("/")
     public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             return "/admin/new";
         }

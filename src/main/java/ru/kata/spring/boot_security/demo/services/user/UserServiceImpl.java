@@ -11,8 +11,8 @@ import java.util.Optional;
 
 
 @Service
-@Transactional
-public class UserServiceImpl implements UserService<User, Long> {
+@Transactional(readOnly = true)
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -22,30 +22,33 @@ public class UserServiceImpl implements UserService<User, Long> {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void save(User o) {
-        o.setPassword(passwordEncoder.encode(o.getPassword()));
-        userRepository.save(o);
+    @Transactional
+    public void save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
-    public void update(User o) {
-        Optional<User> editedUser = userRepository.findById(o.getId());
-        if (o.getPassword().isEmpty() &  editedUser.isPresent()) {
-            o.setPassword(editedUser.get().getPassword());
+    @Transactional
+    public void update(User user) {
+        Optional<User> editedUser = userRepository.findById(user.getId());
+        if (user.getPassword().isEmpty() &  editedUser.isPresent()) {
+            user.setPassword(editedUser.get().getPassword());
         } else {
-            o.setPassword(passwordEncoder.encode(o.getPassword()));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        userRepository.save(o);
+        userRepository.save(user);
     }
 
+    @Transactional
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
     public List<User> findAll() {
-        return (List<User>) userRepository.findAll();
+        return  userRepository.findAll();
     }
 }
