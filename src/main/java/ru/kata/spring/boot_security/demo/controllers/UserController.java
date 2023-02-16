@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.security.UserDetailsImpl;
 
 
@@ -15,8 +16,8 @@ public class UserController {
 
     @GetMapping
     public String userPage(Model model, Authentication authentication) {
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        model.addAttribute("user",userDetails.getUser());
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user",user);
         return "user/user";
     }
 }
