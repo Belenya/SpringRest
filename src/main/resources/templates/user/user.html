@@ -1,33 +1,85 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title th:text="${user.getName()}">User</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <title>Admin Panel</title>
 </head>
-    <body th:align="middle">
-        <form th:method="POST" th:action="@{/logout}" th:align="left">
-            <input type="submit" value="Logout"/>
-        </form>
-        <div th:align="middle">
-            <table th:border="1">
-                <caption th:text="'About user'"></caption>
-                <tr>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Age</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                </tr>
-                <tr>
-                    <th th:text="${user.getId()}"/>
-                    <th th:text="${user.getName()}"/>
-                    <th th:text="${user.getLastName()}"/>
-                    <th th:text="${user.getAge()}"/>
-                    <th th:text="${user.getEmail()}"/>
-                    <th th:text="${user.getRole()}"/>
-                </tr>
-            </table>
+<body>
+  <div class="mw-100" style="max-height: 100%">
+    <div class="container" style="background-color: #343a40; color: white; max-width: 100%" >
+      <div class="row mx-auto" style="height: 30px">
+        <div class="col-11 mx-auto">
+          <a class="font-weight-bold" th:text="${principal.getEmail()}"/>
+          <a th:text="' with roles: '"/>
+          <a th:each="role : ${principal.getAuthorities()}" th:text="${role.toString()} + ' '"/>
         </div>
-    </body>
+        <div class="col-1 mx-auto">
+          <form th:method="POST" th:action="@{/logout}">
+            <button class="btn-link border-0"  type="submit" style="color: darkgray; font-size: x-small;">Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="max-width: 100%; max-height: 100%">
+      <div class="row">
+        <div class="col-2" style="background-color: #ffffff; height: 100vh">
+          <div class="row my-3">
+            <ul class="nav nav-pills flex-column " style="width: 100%" aria-orientation="vertical">
+              <li class="nav-item">
+                <a class="nav-link active" href="#User" role="tab" data-toggle="tab">User</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-10" style="background-color: #f8f9fa; height: 100%">
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="User">
+              <div class="container" style="background-color: #f8f9fa; height: 100vh">
+                <div class="row align-items-center" style="height: 70px">
+                  <div class="h3">User information panel</div>
+                </div>
+                    <div class="row align-items-center border rounded-top" style="background-color: #f7f7f7; height: 50px;">
+                      <div class="col">About user</div>
+                    </div>
+                    <div class="row border border-top-0 rounded-bottom " style="background-color: white; min-height: 300px">
+                      <div class="col align-items-center my-3">
+                        <table class="table table-striped">
+                          <thead>
+                          <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr>
+                            <th class="font-weight-normal" th:text="${principal.getId()}"></th>
+                            <th class="font-weight-normal" th:text="${principal.getName()}"></th>
+                            <th class="font-weight-normal" th:text="${principal.getLastName()}"></th>
+                            <th class="font-weight-normal" th:text="${principal.getAge()}"></th>
+                            <th class="font-weight-normal" th:text="${principal.getEmail()}"></th>
+                            <th class="font-weight-normal">
+                              <a th:each="role : ${principal.getAuthorities()}" th:text="${role.toString()} + ' '"/>
+                            </th>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
 </html>

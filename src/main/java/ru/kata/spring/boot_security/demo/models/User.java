@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -100,6 +102,9 @@ public class User implements UserDetails {
     }
 
     public Set<Role> getRole() {
+        if (Objects.isNull(role)) {
+            return Collections.emptySet();
+        }
         return role;
     }
 
@@ -147,5 +152,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 
 }

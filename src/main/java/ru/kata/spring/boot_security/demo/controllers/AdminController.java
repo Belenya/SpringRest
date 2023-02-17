@@ -1,14 +1,13 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.role.RoleService;
 import ru.kata.spring.boot_security.demo.services.user.UserService;
 
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/admin")
@@ -22,41 +21,25 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-
     @GetMapping
-    public String users(Model model) {
+    public String admin(@ModelAttribute("newUser") User user,
+                        @ModelAttribute("editedUser") User editedUser,
+                        Authentication authentication,
+                        Model model) {
         model.addAttribute("users", userService.findAll());
-        return "/admin/adminPanel";
-    }
-
-    @GetMapping("/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("principal", authentication.getPrincipal());
         model.addAttribute("roles", roleService.findAll());
-        return "/admin/new";
+        return "admin/admin";
     }
 
     @PostMapping("/")
-    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/admin/new";
-        }
+    public String create(@ModelAttribute("newUser") User user) {
         userService.save(user);
-        return "redirect:/admin/";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String updateUser(Model model, @PathVariable("id") String id) {
-        model.addAttribute("user", userService.findById(Long.parseLong(id)).orElse(new User()));
-        model.addAttribute("roles", roleService.findAll());
-        return "/admin/edit";
+        return "redirect:/admin";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/admin/edit";
-        }
+    public String update(@ModelAttribute("editedUser") User user) {
         userService.update(user);
         return "redirect:/admin";
     }
