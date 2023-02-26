@@ -10,11 +10,7 @@
   <div class="mw-100" style="max-height: 100%">
     <div class="container" style="background-color: #343a40; color: white; max-width: 100%" >
       <div class="row mx-auto" style="height: 30px">
-        <div class="col-11 mx-auto">
-          <a class="font-weight-bold" th:text="${principal.getEmail()}"/>
-          <a th:text="' with roles: '"/>
-          <a th:each="role : ${principal.getAuthorities()}" th:text="${role.toString()} + ' '"/>
-        </div>
+        <div class="col-11 mx-auto" id="header"></div>
         <div class="col-1 mx-auto">
           <form th:method="POST" th:action="@{/logout}">
             <button class="btn-link border-0"  type="submit" style="color: darkgray; font-size: x-small;">Logout</button>
@@ -28,7 +24,7 @@
           <div class="row my-3">
             <ul class="nav nav-pills flex-column " style="width: 100%" aria-orientation="vertical">
               <li class="nav-item">
-                <a class="nav-link active" href="#User" role="tab" data-toggle="tab">User</a>
+                <a class="nav-link active" href="user.html#User" role="tab" data-toggle="tab">User</a>
               </li>
             </ul>
           </div>
@@ -57,15 +53,7 @@
                           </tr>
                           </thead>
                           <tbody>
-                          <tr>
-                            <th class="font-weight-normal" th:text="${principal.getId()}"></th>
-                            <th class="font-weight-normal" th:text="${principal.getName()}"></th>
-                            <th class="font-weight-normal" th:text="${principal.getLastName()}"></th>
-                            <th class="font-weight-normal" th:text="${principal.getAge()}"></th>
-                            <th class="font-weight-normal" th:text="${principal.getEmail()}"></th>
-                            <th class="font-weight-normal">
-                              <a th:each="role : ${principal.getAuthorities()}" th:text="${role.toString()} + ' '"/>
-                            </th>
+                          <tr id="userTable">
                           </tr>
                           </tbody>
                         </table>
@@ -78,6 +66,32 @@
           </div>
         </div>
       </div>
+  <script>
+      async function fillTable() {
+          let user = await fetch("http://localhost:8080/api/user").then(response => response.json());
+          userTable.innerHTML = '<th class="font-weight-normal">' + user.id + '</th>' +
+              '<th class="font-weight-normal">' + user.name + '</th>'+
+              '<th class="font-weight-normal">' + user.lastName + '</th>'+
+              '<th class="font-weight-normal">' + user.age + '</th>'+
+              '<th class="font-weight-normal">' + user.email + '</th>';
+          for (let el of user.role) {
+              userTable.innerHTML +='<th class="font-weight-normal">' +
+                  '<a>' + el.value.substring(5) + ' <a/>' +
+                  '</th>';
+          }
+      }
+
+      async function fillHeader() {
+          let user = await fetch("http://localhost:8080/api/user").then(response => response.json());
+          header.innerHTML = '<a class="font-weight-bold">' + user.email + ' </a>' +
+              '<a>with roles: </a>';
+          for (let el of user.role) {
+              header.innerHTML += '<a>' + el.value.substring(5) + ' </a>';
+          }
+      }
+      fillHeader();
+      fillTable();
+  </script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

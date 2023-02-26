@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -42,6 +43,7 @@ public class Role implements GrantedAuthority {
     }
 
     @Override
+    @JsonIgnore
     public String getAuthority() {
         return getValue();
     }
@@ -50,4 +52,5 @@ public class Role implements GrantedAuthority {
     public String toString() {
         return value.substring(5);
     }
+
 }
