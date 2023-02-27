@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.rest;
+package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;

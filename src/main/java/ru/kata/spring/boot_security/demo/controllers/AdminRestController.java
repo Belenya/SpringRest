@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.rest;
+package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
